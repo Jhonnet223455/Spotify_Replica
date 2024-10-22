@@ -1,4 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 * {
 	margin: 0;
@@ -38,6 +41,7 @@ body {
 	width: calc(100% - 30rem);
 }
 
+  
 .container-arrows {
 	display: flex;
 	gap: 3rem;
@@ -58,6 +62,11 @@ body {
 .container-arrow-right i {
 	color: #fff;
 	font-size: 1.4rem;
+}
+
+
+.search-btn{
+	right:22.5%;
 }
 
 .buttons-user {
@@ -115,19 +124,18 @@ body {
 
 	position: fixed;
 	width: 30rem;
-	height: calc(100vh - 8rem);
+	height: 100vh;
 }
 
 .logo-svg {
 	color: #e31414;
-	width: 18rem;
-	padding: 0 2.4rem;
+	width: 5rem;
+	margin: 0 2rem;
 	
 }
 
 .nav-main {
 	padding: 0 2.4rem;
-
 	display: flex;
 	flex-direction: column;
 	gap: 3rem;
@@ -244,16 +252,39 @@ body {
 /* ********************************** */
 /*         CONTENIDO PRINCIPAL        */
 /* ********************************** */
-.main-content {
-	grid-row: 1/3;
+
+.main-wrapper{
+	margin-top: 2rem;
 	grid-column: 2/-1;
+	padding: 2.5rem;
+	display: flex;
+	flex-direction: column;
+}
+
+  .overflow-hidden {
+	overflow: hidden;
+	height: 0; /* Esto asegura que el contenedor no ocupe espacio */
+	transition: height 0.3s ease; /* Opcional: agrega una transición suave */
+  }
+  
+  .playlists,
+  .search {
+	transition: height 0.3s ease; /* Opcional: transición para suavizar el cambio */
+  }
+  
+
+.main-content {
+	margin: 2rem 0 0 0;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(15rem, 3fr));
+	
 
 	background-color: #121212;
 	padding: 2.5rem;
 
 	display: flex;
 	flex-direction: column;
-	gap: 3rem;
+	gap: 5rem;
 }
 
 .title-playlist {
@@ -267,7 +298,7 @@ body {
 	text-decoration: underline;
 }
 
-.container-name-concentracion,
+
 .container-name-spotify-playlists {
 	display: flex;
 	flex-direction: column;
@@ -275,14 +306,14 @@ body {
 	margin-bottom: 2rem;
 }
 
-.container-card-concentracion,
+
 .container-card-spotify-playlists {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
 	gap: 2.4rem;
 }
 
-.card-concentracion,
+
 .card-spotify-playlists {
 	background-color: #181818;
 	border-radius: 0.5rem;
@@ -299,7 +330,8 @@ body {
 }
 
 .card-img img {
-	width: 100%;
+	width: 17em;
+
 	border-radius: 0.5rem;
 }
 
@@ -326,6 +358,38 @@ body {
 	-webkit-line-clamp: 2;
 	-webkit-box-orient: vertical;
 }
+
+.song-cards {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
+  }
+  
+  .song-card {
+	background-color: #1c1c1c;
+	border-radius: 10px;
+	padding: 10px;
+	width: 200px;
+	text-align: center;
+	color: #fff;
+  }
+  
+  .song-card img {
+	width: 100%;
+	height: auto;
+	border-radius: 8px;
+  }
+  
+  .song-card h3 {
+	font-size: 16px;
+	margin: 10px 0 5px;
+  }
+  
+  .song-card p {
+	font-size: 14px;
+	color: #a0a0a0;
+  }
+  
 
 /* ********************************** */
 /*               FOOTER               */
@@ -399,14 +463,13 @@ body {
 /* ********************************** */
 /*            BANNER FINAL            */
 /* ********************************** */
-.banner-bottom {
+.music-player {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 
 	padding: 1rem 2rem;
-	background-image: linear-gradient(90deg, #af2896, #509bf5);
-	color: #fff;
+	background-color: #181818;
 
 	position: fixed;
 	bottom: 0;
@@ -415,46 +478,20 @@ body {
 	height: 8rem;
 }
 
-.banner-bottom .content {
-	display: flex;
-	flex-direction: column;
-	gap: 1rem;
+
+/* estilos del botón de volumen */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+     
+    input[type="range"]::-webkit-slider-thumb {
+        width: 15px;
+        -webkit-appearance: none;
+          appearance: none;
+        height: 8px;
+        cursor: pointer;
+        background: #FFF;
+        box-shadow: -405px 0 0 405px #ffffff;
+        border-radius: 50%;
+        
+    }
 }
 
-.banner-bottom .content span {
-	font-size: 1.4rem;
-	text-transform: uppercase;
-}
-
-.banner-bottom .content p {
-	font-size: 1.6rem;
-}
-
-/* Clases Adicionales */
-.transparent {
-	opacity: 0.9;
-}
-
-.btn-play {
-	width: 5rem;
-	height: 5rem;
-
-	display: flex;
-	justify-content: center;
-	align-items: center;
-
-    background-color: #1ed760;
-    border: none;
-    outline: none;
-    border-radius: 50%;
-    position: absolute;
-    top: 55%;
-    left: 52%;
-    transform: translate(50%, -50%);
-    cursor: pointer;
-}
-
-.btn-play i{
-    font-size: 2.3rem;
-    padding-left: .5rem;
-}

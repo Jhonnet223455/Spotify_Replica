@@ -1,9 +1,9 @@
 // components/PlaylistCard.jsx
 import React from 'react';
 
-const PlaylistCard = ({ imgSrc, title, description }) => {
+const PlaylistCard = ({ imgSrc, title, description, onClick }) => {
   return (
-    <div className="card">
+    <div className="card" onClick={onClick}>
       <div className="card-img">
         <img src={imgSrc} alt={title} />
       </div>

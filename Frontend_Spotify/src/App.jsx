@@ -1,20 +1,25 @@
-// App.jsx
-import React from 'react';
+import React, { useState } from 'react';
 import './styles.css';  // Importa el archivo CSS
 import TopBar from './components/TopBar';
 import SideBar from './components/SideBar';
 import MainContent from './components/MainContent';
 import Footer from './components/Footer';
-import BannerBottom from './components/BannerBottom';
+import MusicPlayer from './components/MusicPlayer';
 
 const App = () => {
+  const [searchResults, setSearchResults] = useState([]);
+
+  // Función para actualizar los resultados de búsqueda
+  const updateSearchResults = (results) => {
+    setSearchResults(results);
+  };
+
   return (
     <div className="container">
-      <TopBar />
+      <TopBar onSearchResults={updateSearchResults} />
       <SideBar />
-      <MainContent />
+      <MainContent searchResults={searchResults} />
       <Footer />
-      <BannerBottom />
     </div>
   );
 };
