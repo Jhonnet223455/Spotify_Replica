@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 
 const TopBar = ({ onSearchResults }) => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [searchHistory, setSearchHistory] = useState([]); // Historial de búsquedas
+  const [currentSearchIndex, setCurrentSearchIndex] = useState(-1); // Índice actual del historial
   const API_KEY = ''; // Agrega tu clave de API aquí.
 
   const handleSearch = async () => {
@@ -14,7 +16,12 @@ const TopBar = ({ onSearchResults }) => {
         console.log('Resultados de búsqueda:', data);
 
         // Llama a la función para actualizar los resultados en el componente padre
-        onSearchResults(data.items); // Asegúrate de pasar solo los resultados que necesitas
+        onSearchResults(data.items);
+
+        // Actualizar el historial de búsqueda
+        const newHistory = [...searchHistory.slice(0, currentSearchIndex + 1), searchTerm];
+        setSearchHistory(newHistory);
+        setCurrentSearchIndex(newHistory.length - 1); // Establece el nuevo índice actual
       } catch (error) {
         console.error('Error en la búsqueda:', error);
       }
@@ -27,13 +34,31 @@ const TopBar = ({ onSearchResults }) => {
     }
   };
 
+  const handleBack = () => {
+    if (currentSearchIndex > 0) {
+      const previousSearch = searchHistory[currentSearchIndex - 1];
+      setSearchTerm(previousSearch);
+      setCurrentSearchIndex(currentSearchIndex - 1);
+      handleSearch(); // Realiza la búsqueda del término anterior
+    }
+  };
+
+  const handleForward = () => {
+    if (currentSearchIndex < searchHistory.length - 1) {
+      const nextSearch = searchHistory[currentSearchIndex + 1];
+      setSearchTerm(nextSearch);
+      setCurrentSearchIndex(currentSearchIndex + 1);
+      handleSearch(); // Realiza la búsqueda del término siguiente
+    }
+  };
+
   return (
     <div className="topbar">
       <div className="container-arrows">
-        <div className="container-arrow-left cursor-pointer">
+        <div className="container-arrow-left cursor-pointer" onClick={handleBack}>
           <i className="fa-solid fa-chevron-left"></i>
         </div>
-        <div className="container-arrow-right cursor-pointer">
+        <div className="container-arrow-right cursor-pointer" onClick={handleForward}>
           <i className="fa-solid fa-chevron-right"></i>
         </div>
       </div>

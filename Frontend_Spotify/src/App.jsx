@@ -8,17 +8,19 @@ import MusicPlayer from './components/MusicPlayer';
 
 const App = () => {
   const [searchResults, setSearchResults] = useState([]);
+  const [isHome, setIsHome] = useState(true);  // Estado para controlar si estamos en "Inicio" o en "Resultados de búsqueda"
 
   // Función para actualizar los resultados de búsqueda
   const updateSearchResults = (results) => {
     setSearchResults(results);
+    setIsHome(false); // Cambia a false para mostrar resultados de búsqueda
   };
 
   return (
     <div className="container">
       <TopBar onSearchResults={updateSearchResults} />
-      <SideBar />
-      <MainContent searchResults={searchResults} />
+      <SideBar setIsHome={setIsHome} /> {/* Pasamos la función setIsHome */}
+      <MainContent searchResults={searchResults} isHome={isHome} /> {/* Pasamos isHome */}
       <Footer />
     </div>
   );
