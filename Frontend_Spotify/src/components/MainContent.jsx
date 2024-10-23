@@ -8,12 +8,7 @@ const MainContent = ({ searchResults }) => {
 
   return (
     <div className="main-wrapper">
-      <div className={`playlists ${hasResults ? 'overflow-hidden' : ''}`}>
-        <PlayList />
-      </div>
-      <div className={`search ${hasResults ? '' : 'overflow-hidden'}`}>
-        {hasResults && <Search searchResults={searchResults} />}
-      </div>
+      <PlayList />
     </div>
   );
 };

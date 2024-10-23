@@ -5,11 +5,11 @@ const API_KEY = '';
 const GENRES = ['House', 'Funk', 'Salsa', 'Rock', 'Jazz'];
 
 const PlayList = () => {
-    const [playlists, setPlaylists] = useState([]);
+  const [playlists, setPlaylists] = useState([]);
   const [selectedPlaylist, setSelectedPlaylist] = useState(null);
   const [playlistSongs, setPlaylistSongs] = useState([]);
+  const [currentSong, setCurrentSong] = useState(null); // Nueva variable para la canción actual
 
-  // Obtener playlists al montar el componente
   useEffect(() => {
     const fetchPlaylists = async () => {
       const newPlaylists = [];
@@ -37,14 +37,6 @@ const PlayList = () => {
     fetchPlaylists();
   }, []);
 
-  // Limpiar canciones cuando seleccionas una nueva playlist
-  const handlePlaylistClick = (playlist) => {
-    setSelectedPlaylist(playlist);
-    fetchPlaylistSongs(playlist.playlistId);
-    setPlaylistSongs([]); // Limpiar canciones antes de cargar nuevas
-  };
-
-  // Obtener las canciones de una playlist específica
   const fetchPlaylistSongs = async (playlistId) => {
     const response = await fetch(
       `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${playlistId}&maxResults=10&key=${API_KEY}`
@@ -55,20 +47,24 @@ const PlayList = () => {
       setPlaylistSongs(
         data.items.map((item) => ({
           title: item.snippet.title,
-          videoId: item.snippet.resourceId.videoId,
+          videoId: item.snippet.resourceId.videoId, // ID del video
           thumbnail: item.snippet.thumbnails.default.url,
           author: item.snippet.videoOwnerChannelTitle,
         }))
       );
     } else {
-      setPlaylistSongs([]); // Limpiar si no hay canciones en la playlist
+      setPlaylistSongs([]); // Limpiar canciones si no hay resultados
     }
   };
 
-  // Limpiar estado de canciones al cambiar de playlist o recargar el componente
-  useEffect(() => {
-    setPlaylistSongs([]); // Limpiar canciones al montar o cambiar playlist
-  }, [selectedPlaylist]);
+  const handlePlaylistClick = (playlist) => {
+    setSelectedPlaylist(playlist);
+    fetchPlaylistSongs(playlist.playlistId);
+  };
+
+  const handleSongClick = (song) => {
+    setCurrentSong(song); // Establecer la canción actual
+  };
 
   return (
     <section className="main-content">
@@ -93,13 +89,29 @@ const PlayList = () => {
           <h2 className='text-4xl font-bold my-8'>{selectedPlaylist.title}</h2>
           <div className="song-cards">
             {playlistSongs.map((song, index) => (
-              <div key={index} className="song-card">
+              <div key={index} className="song-card" onClick={() => handleSongClick(song)}>
                 <img src={song.thumbnail} alt={song.title} />
                 <h3>{song.title}</h3>
                 <p>{song.author}</p>
               </div>
             ))}
           </div>
+        </div>
+      )}
+
+      {/* Mostrar el reproductor de YouTube si hay una canción seleccionada */}
+      {currentSong && (
+        <div className="video-player">
+          <h3 className='text-4xl font-bold my-7'>Reproduciendo: {currentSong.title}</h3>
+          <iframe
+            width="560"
+            height="315"
+            src={`https://www.youtube.com/embed/${currentSong.videoId}?autoplay=1`}
+            title={currentSong.title}
+            frameBorder="0"
+            allow="autoplay; encrypted-media"
+            allowFullScreen
+          ></iframe>
         </div>
       )}
     </section>
